@@ -52,6 +52,49 @@ lib/
 
 ---
 
+## 章节总目录导航
+
+启动后进入目录总览页面，点击卡片即可导航到对应小节。
+
+| 代码 | 运行效果 |
+|------|---------|
+| ![目录代码](assets/演示截图/目录导航-代码.png) | ![目录运行](assets/演示截图/目录导航-运行效果.png) |
+
+### 实现原理
+
+`main.dart` 使用 `ListView` + `Card` + `ListTile` 构建目录，点击后通过 `Navigator.push` 跳转：
+
+```dart
+class _ChapterCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final Widget route;
+
+  const _ChapterCard({
+    required this.title,
+    required this.subtitle,
+    required this.route,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.only(bottom: 12),
+      child: ListTile(
+        title: Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+        subtitle: Text(subtitle, style: const TextStyle(fontSize: 12)),
+        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (_) => route));
+        },
+      ),
+    );
+  }
+}
+```
+
+---
+
 ## 5.1 填充（Padding）
 
 > 原文：[5.1 填充（Padding）](https://book.flutterchina.club/chapter5/padding.html)
