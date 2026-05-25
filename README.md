@@ -272,3 +272,81 @@ Row(
 > 关键区别：`Transform.rotate` 在绘制阶段变换不影响布局空间；`RotatedBox` 在布局阶段变换，装饰和相邻组件会随之调整。
 
 > 独立运行：在 VS Code 中打开 `lib/chapter5/transform.dart` 按 `F5`
+
+---
+
+## 5.4 容器组件（Container）
+
+> 原文：[5.4 容器组件（Container）](https://book.flutterchina.club/chapter5/container.html)
+
+### 功能介绍
+
+| 知识点 | 说明 |
+|--------|------|
+| `Container` | `DecoratedBox` + `ConstrainedBox` + `Transform` + `Padding` + `Align` 的组合容器 |
+| `margin` | 容器外部留白 |
+| `padding` | 容器内部留白 |
+| `decoration` | 背景装饰（渐变、阴影等） |
+| `constraints` | 容器大小约束 |
+| `transform` | 矩阵变换 |
+
+### 演示效果
+
+| 代码 | 运行效果 |
+|------|---------|
+| ![5.4 代码](assets/演示截图/5.4%20Container容器-代码.png) | ![5.4 运行](assets/演示截图/5.4%20Container容器-运行效果.png) |
+
+### 核心代码示例
+
+**Container 综合示例 —— 卡片（渐变 + 阴影 + 旋转）**
+
+```dart
+Container(
+  margin: const EdgeInsets.only(top: 50.0, left: 120.0),
+  constraints: const BoxConstraints.tightFor(width: 200.0, height: 150.0),
+  decoration: const BoxDecoration(
+    gradient: RadialGradient(
+      colors: [Colors.red, Colors.orange],
+      center: Alignment.topLeft,
+      radius: .98,
+    ),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black54,
+        offset: Offset(2.0, 2.0),
+        blurRadius: 4.0,
+      ),
+    ],
+  ),
+  transform: Matrix4.rotationZ(.2),
+  alignment: Alignment.center,
+  child: const Text(
+    "5.20",
+    style: TextStyle(color: Colors.white, fontSize: 40.0),
+  ),
+)
+```
+
+**margin —— 容器外部留白**
+
+```dart
+Container(
+  margin: const EdgeInsets.all(20.0),
+  color: Colors.orange,
+  child: const Text("Hello world!"),
+)
+```
+
+**padding —— 容器内部留白**
+
+```dart
+Container(
+  padding: const EdgeInsets.all(20.0),
+  color: Colors.orange,
+  child: const Text("Hello world!"),
+)
+```
+
+> `color` 和 `decoration` 互斥，不能同时设置。`margin` 在外、`padding` 在内，均通过 `Padding` 组件实现。
+
+> 独立运行：在 VS Code 中打开 `lib/chapter5/container.dart` 按 `F5`
