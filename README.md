@@ -120,3 +120,56 @@ Padding(
 ```
 
 > 独立运行：`cd lib/chapter5 && dart run padding.dart` 或在 VS Code 中打开该文件按 `F5`
+
+---
+
+## 5.2 装饰容器（DecoratedBox）
+
+> 原文：[5.2 装饰容器（DecoratedBox）](https://book.flutterchina.club/chapter5/decoratedbox.html)
+
+### 功能介绍
+
+| 知识点 | 说明 |
+|--------|------|
+| `DecoratedBox` | 在子组件绘制前/后绘制装饰 |
+| `BoxDecoration` | 常用装饰类（颜色、边框、圆角、阴影、渐变） |
+| `LinearGradient` | 线性渐变 |
+| `BorderRadius` | 圆角半径 |
+| `BoxShadow` | 阴影效果 |
+
+### 演示效果
+
+| 代码 | 运行效果 |
+|------|---------|
+| ![5.2 代码](assets/演示截图/5.2%20装饰容器-代码.png) | ![5.2 运行](assets/演示截图/5.2%20装饰容器-运行效果.png) |
+
+### 核心代码示例
+
+**DecoratedBox + BoxDecoration 渐变按钮**
+
+```dart
+DecoratedBox(
+  decoration: BoxDecoration(
+    gradient: LinearGradient(
+      colors: [Colors.red, Colors.orange],
+    ),
+    borderRadius: BorderRadius.all(Radius.circular(3.0)),
+    boxShadow: [
+      BoxShadow(
+        color: Colors.black54,
+        offset: Offset(2.0, 2.0),
+        blurRadius: 4.0,
+      ),
+    ],
+  ),
+  child: Padding(
+    padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 18.0),
+    child: Text(
+      "Login",
+      style: TextStyle(color: Colors.white),
+    ),
+  ),
+)
+```
+
+> 独立运行：在 VS Code 中打开 `lib/chapter5/decorated_box.dart` 按 `F5`
