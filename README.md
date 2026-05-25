@@ -173,3 +173,102 @@ DecoratedBox(
 ```
 
 > 独立运行：在 VS Code 中打开 `lib/chapter5/decorated_box.dart` 按 `F5`
+
+---
+
+## 5.3 变换（Transform）
+
+> 原文：[5.3 变换（Transform）](https://book.flutterchina.club/chapter5/transform.html)
+
+### 功能介绍
+
+| 知识点 | 说明 |
+|--------|------|
+| `Matrix4.skewY` | 沿 Y 轴倾斜变换 |
+| `Transform.translate` | 平移变换（不影响布局） |
+| `Transform.rotate` | 旋转变换（绘制阶段） |
+| `Transform.scale` | 缩放变换（绘制阶段） |
+| `RotatedBox` | 旋转变换（布局阶段，影响组件位置和大小） |
+
+### 演示效果
+
+| 代码 | 运行效果 |
+|------|---------|
+| ![5.3 代码](assets/演示截图/5.3%20变换-代码.png) | ![5.3 运行](assets/演示截图/5.3%20变换-运行效果.png) |
+
+### 核心代码示例
+
+**Matrix4.skewY —— 倾斜**
+
+```dart
+Container(
+  color: Colors.black,
+  child: Transform(
+    alignment: Alignment.topRight,
+    transform: Matrix4.skewY(0.3),
+    child: Container(
+      padding: const EdgeInsets.all(8.0),
+      color: Colors.deepOrange,
+      child: const Text('Apartment for rent!'),
+    ),
+  ),
+)
+```
+
+**Transform.translate —— 平移**
+
+```dart
+DecoratedBox(
+  decoration: BoxDecoration(color: Colors.red),
+  child: Transform.translate(
+    offset: const Offset(-20.0, -5.0),
+    child: const Text("Hello world"),
+  ),
+)
+```
+
+**Transform.rotate —— 旋转**
+
+```dart
+DecoratedBox(
+  decoration: BoxDecoration(color: Colors.red),
+  child: Transform.rotate(
+    angle: 1.57079632679, // π/2，旋转90度
+    child: Text("Hello world"),
+  ),
+)
+```
+
+**Transform.scale —— 缩放**
+
+```dart
+DecoratedBox(
+  decoration: BoxDecoration(color: Colors.red),
+  child: Transform.scale(
+    scale: 1.5,
+    child: const Text("Hello world"),
+  ),
+)
+```
+
+**RotatedBox —— 布局阶段旋转（与 Transform.rotate 的区别）**
+
+```dart
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: <Widget>[
+    DecoratedBox(
+      decoration: BoxDecoration(color: Colors.red),
+      child: RotatedBox(
+        quarterTurns: 1, // 旋转90度（1/4圈）
+        child: Text("Hello world"),
+      ),
+    ),
+    Text("你好", style: TextStyle(color: Colors.green, fontSize: 18.0)),
+  ],
+)
+```
+
+> 关键区别：`Transform.rotate` 在绘制阶段变换不影响布局空间；`RotatedBox` 在布局阶段变换，装饰和相邻组件会随之调整。
+
+> 独立运行：在 VS Code 中打开 `lib/chapter5/transform.dart` 按 `F5`
