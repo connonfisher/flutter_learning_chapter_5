@@ -49,3 +49,74 @@ lib/
 | 5.5 | 剪裁 | `ClipOval` / `ClipRRect` / `ClipRect` / `CustomClipper` |
 | 5.6 | 空间适配 | `FittedBox` / `BoxFit` / `SingleLineFittedBox` |
 | 5.7 | 页面骨架 | `AppBar` / `Drawer` / `FAB` / `BottomNavigationBar` |
+
+---
+
+## 5.1 填充（Padding）
+
+> 原文：[5.1 填充（Padding）](https://book.flutterchina.club/chapter5/padding.html)
+
+### 功能介绍
+
+| 知识点 | 说明 |
+|--------|------|
+| `Padding` | 给子节点添加填充（留白） |
+| `EdgeInsets.all` | 所有方向相同数值填充 |
+| `EdgeInsets.only` | 指定某个方向的填充 |
+| `EdgeInsets.symmetric` | 对称方向填充（vertical / horizontal） |
+| `EdgeInsets.fromLTRB` | 分别指定四个方向的填充 |
+
+### 演示效果
+
+| 代码 | 运行效果 |
+|------|---------|
+| ![5.1 代码](assets/演示截图/5.1%20填充-代码.png) | ![5.1 运行](assets/演示截图/5.1%20填充-运行效果.png) |
+
+### 核心代码示例
+
+**EdgeInsets.all —— 四边均等填充**
+
+```dart
+Padding(
+  padding: const EdgeInsets.all(16),
+  child: Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: const <Widget>[
+      Padding(
+        padding: EdgeInsets.only(left: 8),
+        child: Text("Hello world"),
+      ),
+      // ...
+    ],
+  ),
+)
+```
+
+**EdgeInsets.only —— 单侧填充**
+
+```dart
+Padding(
+  padding: const EdgeInsets.only(left: 8),
+  child: Text("Hello world"),
+)
+```
+
+**EdgeInsets.symmetric —— 对称填充**
+
+```dart
+Padding(
+  padding: const EdgeInsets.symmetric(vertical: 8),
+  child: Text("I am Jack"),
+)
+```
+
+**EdgeInsets.fromLTRB —— 四边分别指定**
+
+```dart
+Padding(
+  padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+  child: Text("Your friend"),
+)
+```
+
+> 独立运行：`cd lib/chapter5 && dart run padding.dart` 或在 VS Code 中打开该文件按 `F5`
