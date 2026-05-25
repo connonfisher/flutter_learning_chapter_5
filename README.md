@@ -419,3 +419,87 @@ DecoratedBox(
 > 剪裁发生在绘制阶段，不影响布局空间（与 `Transform` 同理）。`shouldReclip` 返回 `false` 可避免不必要的重新剪裁开销。
 
 > 独立运行：在 VS Code 中打开 `lib/chapter5/clip.dart` 按 `F5`
+
+---
+
+## 5.6 空间适配（FittedBox）
+
+> 原文：[5.6 空间适配（FittedBox）](https://book.flutterchina.club/chapter5/fittedbox.html)
+
+### 功能介绍
+
+| 知识点 | 说明 |
+|--------|------|
+| `FittedBox` | 子组件超出父容器时按比例缩放适配 |
+| `BoxFit.none` | 不缩放，按真实大小绘制 |
+| `BoxFit.contain` | 按比例缩放，尽可能占据父容器 |
+| `SingleLineFittedBox` | 自定义单行缩放布局（minWidth + maxWidth 约束技巧） |
+
+### 演示效果
+
+| 代码 | 运行效果 |
+|------|---------|
+| ![5.6 代码](assets/演示截图/5.6%20空间适配-代码.png) | ![5.6 运行](assets/演示截图/5.6%20空间适配-运行效果.png) |
+
+### 核心代码示例
+
+**BoxFit.none vs BoxFit.contain**
+
+```dart
+Container(
+  width: 50, height: 50, color: Colors.red,
+  child: FittedBox(
+    fit: BoxFit.none,  // 不缩放，蓝色会溢出红色区域
+    child: Container(width: 60, height: 70, color: Colors.blue),
+  ),
+)
+
+Container(
+  width: 50, height: 50, color: Colors.red,
+  child: FittedBox(
+    fit: BoxFit.contain,  // 按比例缩放适配
+    child: Container(width: 60, height: 70, color: Colors.blue),
+  ),
+)
+```
+
+**FittedBox 单行缩放布局**
+
+```dart
+FittedBox(
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [child, child, child],
+  ),
+)
+```
+
+**SingleLineFittedBox —— 解决短文本缩在一起的问题**
+
+```dart
+class SingleLineFittedBox extends StatelessWidget {
+  final Widget? child;
+  const SingleLineFittedBox({super.key, this.child});
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (_, constraints) {
+        return FittedBox(
+          child: ConstrainedBox(
+            constraints: constraints.copyWith(
+              minWidth: constraints.maxWidth,   // 至少占满屏幕宽度
+              maxWidth: double.infinity,         // 允许无限宽
+            ),
+            child: child,
+          ),
+        );
+      },
+    );
+  }
+}
+```
+
+> 关键：`FittedBox` 传给子组件的约束是无限大，导致 `Row` 宽度为子组件之和。通过 `LayoutBuilder` 获取屏幕宽度并设 `minWidth` 解决收缩问题。
+
+> 独立运行：在 VS Code 中打开 `lib/chapter5/fitted_box.dart` 按 `F5`
