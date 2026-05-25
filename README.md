@@ -503,3 +503,106 @@ class SingleLineFittedBox extends StatelessWidget {
 > 关键：`FittedBox` 传给子组件的约束是无限大，导致 `Row` 宽度为子组件之和。通过 `LayoutBuilder` 获取屏幕宽度并设 `minWidth` 解决收缩问题。
 
 > 独立运行：在 VS Code 中打开 `lib/chapter5/fitted_box.dart` 按 `F5`
+
+---
+
+## 5.7 页面骨架（Scaffold）
+
+> 原文：[5.7 页面骨架（Scaffold）](https://book.flutterchina.club/chapter5/material_scaffold.html)
+
+### 功能介绍
+
+| 知识点 | 说明 |
+|--------|------|
+| `Scaffold` | Material Design 路由页骨架，拼装完整页面 |
+| `AppBar` | 顶部导航栏（标题、按钮、阴影） |
+| `Drawer` | 左右抽屉菜单（滑动/按钮打开） |
+| `FloatingActionButton` | 悬浮操作按钮 |
+| `BottomNavigationBar` | 底部 Tab 导航栏 |
+
+### 演示效果
+
+| 代码 | 运行效果 |
+|------|---------|
+| ![5.7 代码](assets/演示截图/5.7%20页面骨架-代码.png) | ![5.7 运行](assets/演示截图/5.7%20页面骨架-运行效果.png) |
+
+### 核心代码示例
+
+**Scaffold 完整页面**
+
+```dart
+Scaffold(
+  appBar: AppBar(
+    title: const Text("App Name"),
+    actions: <Widget>[
+      IconButton(icon: const Icon(Icons.share), onPressed: () {}),
+    ],
+  ),
+  drawer: const MyDrawer(),
+  bottomNavigationBar: BottomNavigationBar(
+    items: const <BottomNavigationBarItem>[
+      BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+      BottomNavigationBarItem(icon: Icon(Icons.business), label: 'Business'),
+      BottomNavigationBarItem(icon: Icon(Icons.school), label: 'School'),
+    ],
+    currentIndex: _selectedIndex,
+    fixedColor: Colors.blue,
+    onTap: _onItemTapped,
+  ),
+  floatingActionButton: FloatingActionButton(
+    onPressed: _onAdd,
+    child: const Icon(Icons.add),
+  ),
+)
+```
+
+**Drawer 抽屉菜单**
+
+```dart
+class MyDrawer extends StatelessWidget {
+  const MyDrawer({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Drawer(
+      child: MediaQuery.removePadding(
+        context: context,
+        removeTop: true,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            const Padding(
+              padding: EdgeInsets.only(top: 38.0),
+              child: Row(
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0),
+                    child: ClipOval(child: FlutterLogo(size: 80)),
+                  ),
+                  Text("Wendux", style: TextStyle(fontWeight: FontWeight.bold)),
+                ],
+              ),
+            ),
+            Expanded(
+              child: ListView(
+                children: <Widget>[
+                  ListTile(
+                    leading: const Icon(Icons.add),
+                    title: const Text('Add account'),
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.settings),
+                    title: const Text('Manage accounts'),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+```
+
+> 独立运行：在 VS Code 中打开 `lib/chapter5/scaffold.dart` 按 `F5`
