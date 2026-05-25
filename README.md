@@ -350,3 +350,72 @@ Container(
 > `color` 和 `decoration` 互斥，不能同时设置。`margin` 在外、`padding` 在内，均通过 `Padding` 组件实现。
 
 > 独立运行：在 VS Code 中打开 `lib/chapter5/container.dart` 按 `F5`
+
+---
+
+## 5.5 剪裁（Clip）
+
+> 原文：[5.5 剪裁（Clip）](https://book.flutterchina.club/chapter5/clip.html)
+
+### 功能介绍
+
+| 知识点 | 说明 |
+|--------|------|
+| `ClipOval` | 剪裁为内贴圆形/椭圆 |
+| `ClipRRect` | 剪裁为圆角矩形 |
+| `ClipRect` | 剪裁溢出部分 |
+| `ClipPath` | 按自定义路径剪裁 |
+| `CustomClipper` | 自定义剪裁区域 |
+
+### 演示效果
+
+| 代码 | 运行效果 |
+|------|---------|
+| ![5.5 代码](assets/演示截图/5.5%20剪裁-代码.png) | ![5.5 运行](assets/演示截图/5.5%20剪裁-运行效果.png) |
+
+### 核心代码示例
+
+**ClipOval / ClipRRect / ClipRect**
+
+```dart
+Widget avatar = const FlutterLogo(size: 60);
+
+avatar,                                                     // 原图
+ClipOval(child: avatar),                                    // 圆形
+ClipRRect(borderRadius: BorderRadius.circular(5.0), child: avatar), // 圆角矩形
+
+Row(
+  mainAxisAlignment: MainAxisAlignment.center,
+  children: <Widget>[
+    ClipRect(
+      child: Align(
+        alignment: Alignment.topLeft,
+        widthFactor: .5,           // 宽度一半，溢出部分会被剪裁
+        child: avatar,
+      ),
+    ),
+    const Text("你好世界"),
+  ],
+)
+```
+
+**CustomClipper —— 自定义剪裁区域**
+
+```dart
+class MyClipper extends CustomClipper<Rect> {
+  @override
+  Rect getClip(Size size) => const Rect.fromLTWH(10.0, 15.0, 40.0, 30.0);
+
+  @override
+  bool shouldReclip(CustomClipper<Rect> oldClipper) => false;
+}
+
+DecoratedBox(
+  decoration: const BoxDecoration(color: Colors.red),
+  child: ClipRect(clipper: MyClipper(), child: avatar),
+)
+```
+
+> 剪裁发生在绘制阶段，不影响布局空间（与 `Transform` 同理）。`shouldReclip` 返回 `false` 可避免不必要的重新剪裁开销。
+
+> 独立运行：在 VS Code 中打开 `lib/chapter5/clip.dart` 按 `F5`
